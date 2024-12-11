@@ -1,0 +1,6 @@
+{
+  "watch": ["src/**/*.ts"],
+  "ext": "ts",
+  "ignore": ["dist","api"],
+  "exec": "node --import=./src/register.js -r tsconfig-paths/register src/index.ts"
+}
