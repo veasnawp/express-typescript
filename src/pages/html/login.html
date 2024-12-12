@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login - Log in to Your Account</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f4;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 30px auto;
+      background: #ffffff;
+      border-radius: 8px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+      border: 1px solid #ddd;
+    }
+
+    .header {
+      background-color: #4CAF50;
+      color: white;
+      padding: 20px;
+      text-align: center;
+      font-size: 26px;
+      font-weight: bold;
+    }
+
+    .content {
+      padding: 25px;
+      color: #333;
+      line-height: 1.8;
+    }
+
+    p {
+      margin: 0 0 15px;
+    }
+    .footer {
+      background-color: #f4f4f4;
+      padding: 15px;
+      text-align: center;
+      color: #777;
+      font-size: 12px;
+      border-top: 1px solid #ddd;
+    }
+
+    .footer p {
+      margin: 0;
+    }
+
+    .p-note {
+      color: #555;
+      font-size: 14px;
+      line-height: 1.4;
+      text-align: center;
+      font-weight: bold;
+      margin: 0;
+    }
+
+    .form {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      background-color: #ffffff;
+      padding: 30px;
+      width: 450px;
+      border-radius: 20px;
+    }
+
+    ::placeholder {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    }
+
+    .form button {
+      align-self: flex-end;
+    }
+
+    .inputForm {
+      border: 1.5px solid #ecedec;
+      border-radius: 10px;
+      height: 50px;
+      display: flex;
+      align-items: center;
+      padding: 0 10px;
+      transition: 0.2s ease-in-out;
+    }
+
+    .input {
+      margin-left: 10px;
+      padding-left: 8px;
+      padding-right: 8px;
+      border-radius: 10px;
+      border: none;
+      width: 100%;
+      height: calc(100% - 2px);
+      font-size: 16px;
+    }
+
+    .input:focus {
+      outline: none;
+    }
+
+    .inputForm:focus-within, .inputForm:focus-within {
+      outline: 1.5px solid #bdf8c1;
+      transition: all;
+    }
+
+    .flex-row {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 10px;
+      justify-content: space-between;
+    }
+
+    .button-submit {
+      justify-content: center;
+      display: flex;
+      align-items: center;
+      margin: 20px 0 10px 0;
+      background-color: #12b61f;
+      border: none;
+      color: white;
+      font-size: 16px;
+      font-weight: bold;
+      border-radius: 10px;
+      height: 50px;
+      width: 100%;
+      cursor: pointer;
+    }
+    .button-submit:hover {
+      background-color: #1fbd2c;
+    }
+
+    .button-submit svg {
+      display: inline;
+      width: 1.3rem;
+      height: 1.3rem;
+      margin-right: 0.75rem;
+      color: white;
+      animation: spin_357 1s linear infinite;
+    }
+    
+    @keyframes spin_357 {
+      from {
+        transform: rotate(0deg);
+      }
+    
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    .error-message {
+      padding-left: 10px;
+      margin-top: -10px;
+      color: #e40101;
+      p {
+        margin: 0;
+      }
+    }
+
+    .forgot-password {
+      padding-left: 10px;
+      color: #12b61f;
+      text-decoration: none;
+      &:hover {
+        text-decoration: underline;
+      }
+      p {
+        margin: 0;
+      }
+    }
+    .no-account {
+      display: flex;
+      justify-content: center;
+      color: #777;
+      font-weight: 600;
+      a {
+        color: #12b61f;
+        text-decoration: none;
+        &:hover {
+          color: #36d643;
+        }
+      }
+      p {
+        margin: 0;
+      }
+    }
+
+    .p {
+      text-align: center;
+      color: black;
+      font-size: 14px;
+      margin: 5px 0;
+    }
+    .hidden, .button-submit svg.hidden {
+      display: none;
+    }
+
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">Welcome Back</div>
+    <div class="content">
+      <form class="form">
+        <div class="flex-column">
+          <div class="inputForm">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#60cf67" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-mail"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+            <input placeholder="Email Address" class="input" name="email" type="text" required>
+          </div>
+        </div>
+        <div class="flex-column">
+          <div class="inputForm">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#60cf67" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-lock"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            <input placeholder="Password" class="input" type="password" name="password" required>
+            <div class="hidden-password" style="display: flex;">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#60cf67" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon-eye icon-eye-off"><path d="M10.733 5.076a10.744 10.744 0 0 1 11.205 6.575 1 1 0 0 1 0 .696 10.747 10.747 0 0 1-1.444 2.49"></path><path d="M14.084 14.158a3 3 0 0 1-4.242-4.242"></path><path d="M17.479 17.499a10.75 10.75 0 0 1-15.417-5.151 1 1 0 0 1 0-.696 10.75 10.75 0 0 1 4.446-5.143"></path><path d="m2 2 20 20"></path></svg>
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#60cf67" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon-eye icon-eye-open hidden"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/><circle cx="12" cy="12" r="3"/></svg>
+            </div>
+          </div>
+        </div>
+        <div class="error-message hidden"><p>Password do not match</p></div>
+        <a href="/forgot-password" class="forgot-password"><p>Forgot password?</p></a>
+        <button type="submit" class="button-submit">
+          <svg aria-hidden="true" role="status" class="hidden" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="#E5E7EB"></path>
+            <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentColor"></path>
+            </svg>
+          <span>Login</span>
+        </button>
+        <div class="no-account">
+          <p>Don't have an account? <a href="/register">Sign Up</a></p>
+        </div>
+      </form>
+    </div>
+    <div class="footer">
+      <p>&copy; 2024. All rights reserved.</p>
+    </div>
+  </div>
+  <script src="/assets/main.js"></script>
+  <script>
+    const $form = document.querySelector('.form');
+    $form.addEventListener("submit", async (e)=>{
+      e.preventDefault();
+
+      const $btnSubmit = doc.querySelector('.button-submit');
+      const $loading = $btnSubmit.children.item(0);
+      const $btnText = $btnSubmit.children.item(1);
+      
+      $loading.classList.remove('hidden');
+      $btnText.textContent = "";
+
+      function resetButtonSubmit(){
+        $loading.classList.add('hidden');
+        $btnText.textContent = "Login";
+      }
+
+      const $errorMessage = doc.querySelector('.error-message');
+      function showErrorMessage(){
+        $errorMessage.classList.remove('hidden');
+        $errorMessage.children.item(0).textContent = errorMessage
+      }
+
+      const formData = new FormData(e.target);
+      const dataInput = Object.fromEntries(formData);
+      const [email, password] = Object.values(dataInput);
+      
+      let isError = false;
+      let errorMessage = '';
+      const errorPasswordMessage = invalidPassword(password);
+
+      switch (true) {
+        case !isValidEmail(email):
+          isError = true;
+          errorMessage = "Invalid email address";
+          break;
+        case !!(errorPasswordMessage):
+          isError = true;
+          errorMessage = errorPasswordMessage;
+          break;
+
+        default:
+          break;
+      }
+      if(isError){
+        showErrorMessage();
+        resetButtonSubmit();
+        return;
+      }
+
+      let data;
+      try {
+        const res = await fetch("/api/v1/auth/login", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({email, password})
+        });
+        data = await res.json();
+      } catch (error) {
+        alert(error.message);
+        resetButtonSubmit();
+        return;
+      }
+      resetButtonSubmit();
+      if(data.error){
+        errorMessage = data.error;
+        showErrorMessage();
+      } else {
+        window.location.href = window.origin;
+      }
+    });
+
+  </script>
+</body>
+</html>
