@@ -1,7 +1,6 @@
 import { generateAccessToken } from "../helper/index.js";
 import { User } from "../mongodb/model/index.js";
 import { expireTime, setCookie } from "./authController.js";
-import { isAdminEmail } from "../middlewares/next.js";
 import { asyncHandler } from "../middlewares/index.js";
 
 
@@ -176,7 +175,7 @@ export const updateUserByUserId = asyncHandler(async (req, res) => {
     if (newUserBody._id) {
       delete newUserBody._id
     }
-    if (!isAdminEmail(user.email)) {
+    if (!(user.role === "admin")) {
       newUserBody.role = user.role
     }
 

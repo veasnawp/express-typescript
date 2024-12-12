@@ -21,10 +21,10 @@ export const defaultMaxAge = 30 * 24 * 3600 * 1000
  */
 export const expireTime = ms(defaultMaxAge)
 
-export const setCustomCookie = (res: Response, cookie_name: string, cookie_value: string, maxAge = defaultMaxAge) => {
+export const setCustomCookie = (res: Response, cookie_name: string, cookie_value: string, maxAge = defaultMaxAge, httpOnly = true) => {
   res.cookie(cookie_name, cookie_value, {
     maxAge: maxAge,
-    httpOnly: true,
+    httpOnly: httpOnly,
     secure: IS_DEV,
     sameSite: 'strict'
   })
@@ -69,6 +69,10 @@ export const isInValidPassword = (value: string) => {
     return "Password must contain at least one number";
   }
 
+  if (!/[^A-Za-z0-9]/.test(value)) {
+    return "Password must contain at least one special character";
+  }
+
   if (value.length > 60) {
     return "Password is too long";
   }
@@ -82,7 +86,7 @@ export const isInValidPassword = (value: string) => {
 export const register = asyncHandler(async (req, res) => {
 
   let newUserBody = req.body;
-  let { email, username, password, withSocial, name, provider } = newUserBody;
+  let { email, username, password, provider } = newUserBody;
 
   const withOauth = provider === 'oauth';
   if (!password && withOauth) {
@@ -171,9 +175,6 @@ export const login = asyncHandler(async (req: Request, res: Response) => {
     password = generatePassword() + "__random";
   }
 
-
-  if (!['oauth', 'credentials'].some(v => v === provider))
-    return res.status(401).send({ error: "Invalid Credentials" });
   if (!email || !password)
     return res.status(400).send({ error: "Please provide an email" });
 
@@ -182,7 +183,7 @@ export const login = asyncHandler(async (req: Request, res: Response) => {
 
   const userAuth = user.authentication
 
-  console.log("userAuth", userAuth)
+  // console.log("userAuth", userAuth);
 
   if (userAuth && user.password) {
     if (!(user.provider === 'oauth') && !withOauth) {

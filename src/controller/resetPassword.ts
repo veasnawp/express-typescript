@@ -1,71 +1,53 @@
-import nodemailer from "nodemailer"
 import { asyncHandler } from "../middlewares/index.js";
 import { User } from "../mongodb/model/index.js";
-import { generateAccessToken, tokenIsExpired } from "../helper/index.js";
-import { CLIENT_URL } from "../app/constants.js";
+import { generateAccessToken, generateHashedPassword, tokenIsExpired } from "../helper/index.js";
 import { isInValidPassword } from "./authController.js";
-import type { SendMailOptions } from "nodemailer";
-
-const GMAIL_SECRET = process.env.GMAIL_SECRET?.split('|');
-const GMAIL_USERNAME = `${GMAIL_SECRET?.[0]}@gmail.com`;
-const GMAIL_PASSWORD = GMAIL_SECRET?.[1];
+import { sendPasswordResetEmail, sendPasswordResetSuccessfulEmail } from "../nodemailer/email.js";
 
 
-const requestResetPasswordHtml = (name: string, link: string) => {
-  return (
-`<html>
-  <head><style></style></head>
-  <body>
-    <p>Hi ${name},</p>
-    <p>You requested to reset your password.</p>
-    <p> Please, click the link below to reset your password</p>
-    <a href="${link}">Reset Password</a>
-  </body>
-</html>`
-  )
-}
 
 export const forgotPassword = asyncHandler(async (req, res) => {
   const email = req.body.email as string;
 
-  const user = await User.findOne({ email }).lean()
-  if (!user) return res.status(401).send({ error: "User not found" });
+  const user = await User.findOne({ email })
+  const userAuth = user?.authentication;
+  if (!userAuth) return res.status(401).send({ error: "User not found" });
 
-  const resetToken = generateAccessToken({ email }, 'access', { expiresIn: '10m' });
+  const resetToken = generateAccessToken({ email }, 'access', { expiresIn: '1h' });
 
-  const transporter = nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
-      user: GMAIL_USERNAME,
-      pass: GMAIL_PASSWORD as string,
+  sendPasswordResetEmail(
+    {
+      email, 
+      name: user.name||user.username as string, 
+      user_id: user._id.toString()
     },
-  });
-  const mailOptions: SendMailOptions = {
-    from: GMAIL_USERNAME,
-    to: email,
-    subject: 'Password Reset',
-    html: requestResetPasswordHtml(
-      user.name || user.username as string,
-      `${CLIENT_URL}/reset-password/?token=${resetToken}&id=${user._id.toString()}`
-    ),
-  };
-  transporter.sendMail(mailOptions, (error, info) => {
+    resetToken,
+    async (error, info) => {
     if (error) {
       console.error(error.message)
       res.status(500).send({ error: 'Error sending email' });
     } else {
+      userAuth.resetToken = resetToken;
+      await user.save();
       console.log(`Email sent: ${info.response}`);
       res.status(200).send({ message: 'Check your email for instructions on resetting your password' });
     }
-  });
+  })
 });
 
 export const requestPasswordReset = asyncHandler(async (req, res) => {
-  const { token, password } = req.body;
+  const { password } = req.body;
+  const token = req?.cookies?.['reset_token'];
+
+  if (!password || !token) {
+    return res.status(400).json({
+      error: "Invalid token"
+    });
+  }
 
   if (tokenIsExpired(token)) {
     return res.status(400).json({
-      error: "Expired reset token"
+      error: "Expired password reset token"
     });
   }
 
@@ -76,14 +58,27 @@ export const requestPasswordReset = asyncHandler(async (req, res) => {
     });
   }
 
-  const user = await User.findOne({ resetToken: token });
-  const userAuth = user?.authentication
+  const user = await User.findOne({ 'authentication.resetToken': token });
+  const userAuth = user?.authentication;
   if (!userAuth) {
-    return res.status(401).send({ error: "Invalid or expired password reset token" });
+    return res.status(401).send({ error: "Invalid User" });
   } else {
-    user.password = password;
-    delete userAuth.resetToken;
-    await user.save();
-    res.status(200).send({ message: 'Password updated successfully' });
+    user.password = await generateHashedPassword(password);
+    
+    sendPasswordResetSuccessfulEmail(
+      user.email,
+      user.name||user.username as string,
+      async (error, info) => {
+        if (error) {
+          console.error(error.message)
+          res.status(500).send({ error: 'Error sending email' });
+        } else {
+          user.authentication!.resetToken = undefined;
+          await user.save();
+          console.log(`Email sent: ${info.response}`);
+          res.status(200).send({ message: 'Password updated successfully' });
+        }
+      }
+    )
   }
 });
