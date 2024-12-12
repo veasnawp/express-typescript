@@ -2,6 +2,7 @@ import express from "express";
 import usersRoutes from "./users.js";
 import authRoutes from "./auth.js";
 import nodeRoutes from "./node.js";
+import pagesRoutes from "../pages/index.js";
 
 const router = express.Router();
 
@@ -13,6 +14,7 @@ const apiRoutes = (): express.Router => {
 
 const extraRoutes = (): express.Router => {
   nodeRoutes(router);
+  pagesRoutes(router);
   return router;
 }
 
