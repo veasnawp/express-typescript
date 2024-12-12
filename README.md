@@ -19,7 +19,7 @@ This project is a REST API using Express JS + MongoDB + TypeScript providing a p
 Before you begin, make sure you have the following installed:
 
 - [Express](https://expressjs.com)
-- [MongoDB](mongodb.com) or [MongoCompass](mongodb.com/products/compass)
+- [MongoDB](https://mongodb.com) or [MongoCompass](https://mongodb.com/products/compass)
 
 ### Installations:
 
