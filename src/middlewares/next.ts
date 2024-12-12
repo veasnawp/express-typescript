@@ -4,9 +4,6 @@ import { User } from "../mongodb/model/index.js";
 import { setExpireCookie } from "../controller/authController.js";
 import asyncHandler from "./asyncHandler.js";
 
-export const ADMIN_EMAILS = ['veasnawp@gmail.com'];
-export const isAdminEmail = (email: string) => ADMIN_EMAILS.some(mail => mail === email.toLowerCase());
-
 const { get, merge } = lodash;
 
 export const getIdentity = (req: Request) => {
@@ -34,7 +31,8 @@ export const isAdmin = asyncHandler(async (req: Request, res: Response, next: Ne
 
 export const isOwner = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
   const user = getIdentity(req);
-  if (user && ADMIN_EMAILS.some(mail => mail === user.email.toLowerCase())) {
+  const role = user?.role;
+  if (role === "admin") {
     return next();
   }
   const { id, userId } = req.params;
