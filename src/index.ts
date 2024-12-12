@@ -46,6 +46,10 @@ app.get("/goto/*", asyncHandler((req, res) => {
   res.redirect(path)
 }))
 
+app.get("/", (req, res) => {
+  res.status(200).send({ message: "Welcome to Express boilerplate backend" }).end()
+})
+
 app.post("/", (req, res) => {
   res.status(200).send({ message: "Welcome to Express boilerplate backend" }).end()
 })
