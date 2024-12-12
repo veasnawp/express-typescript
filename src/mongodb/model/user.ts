@@ -6,6 +6,7 @@ declare global {
     userId: string;
     name?: string;
     email: string;
+    username?: string;
     avatar?: string;
     password: string;
     authentication: {
